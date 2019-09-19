@@ -835,7 +835,6 @@ void quickSort(int *arr, int l, int h)
 	}
 }
 
-
 void bubbleSort(int arr[], int size, int type)
 {
 	int flag=0;
@@ -973,91 +972,98 @@ int main()
 	display(arr, 7);
 
 }	
+-------------------------------------------------------------------------------------------------------------------
 
+/*merge sort*/
 #include<stdio.h>
 
-
-void swap(int *tmp,int *arr1)
+void merge(int arr[],int l,int u,int mid)
 {
-	int temp=*arr1;
-	*arr1=*tmp;
-	*tmp=temp;
+	int n1=mid-l+1;
+	int n2=u-mid;
 	
+	int arr1[n1];
+	int arr2[n2];
 
-}
+	for(int i=0;i<n1;i++)
+	{
+		arr1[i]=arr[l+i];		
+	}
+	
+	for(int j=0;j<n2;j++)
+	{
+		arr2[j]=arr[mid+1+j];		
+	}
 
-
-void selectionSort(int *arr1,int size)
-{
-	for(int i=0;i<size;i++)
-	{	
-		int temp=arr1[i];
-		for(int j=i+1;j<size;j++)
+	int i=0;
+	int j=0;
+	int k=l;
+	
+	while(i<n1 && j<n2)
+	{
+		if(arr1[i]<arr2[j])
 		{
-			if(temp>arr1[j])
-				swap(&temp,&arr1[j]);
+			arr[k]=arr1[i];
+			i++;
 		}
-		arr1[i]=temp;		
+		else
+		{
+			arr[k]=arr2[j];
+			j++;
+		}
+	k++;	
 	}
 	
-
-}
-
-
-
-
-void display(int *arr,int size)
-{
-	for(int i=0;i<size-1;i++)
+	while(i<n1)
 	{
-		printf("[%d]👉",arr[i]);
+		arr[k]=arr1[i];
+		i++;
+		k++;
 	}
-	printf("[%d]\n",arr[size-1]);
-
+	while(j<n2)
+	{
+		arr[k]=arr2[j];
+		j++;
+		k++;
+	}
 }
 
-void Merge(int *arr1,int *arr2,int *arr3,int size)
+
+void mergesort(int arr[],int l,int u)
 {
-	int k=0;
-	for(int i=0;i<size;)
+	if(l<u)
 	{
-		for(int j=0;j<size;)
-		{
-			if(arr1[i]>arr2[j])
-			{
-				arr3[k]=arr2[j];
-				k++;
-				j++;	
-			}
-			else
-			{
-				arr3[k]=arr1[i];
-				k++;
-				i++;
-			}
-		}	
+			
+		int mid=(l+u)/2;
+		mergesort(arr,l,mid);
+		mergesort(arr,mid+1,u);
+		merge(arr,l,u,mid);
+	}	
+
+
+}
+void display(int arr[],int size)
+{
+	
+	for(int k=0;k<=size;k++)
+	{
+		printf("%d----->",arr[k]);		
 	}
 
 }
 
 
 
-
+//merge sort
 int main()
 {
-	int arr1[] = {1,987,54,321,27};
-	int arr2[] = {989,874,6,322,32};
-	int arr3[11];
+	
+	int arr[]={25,2,40,11,3,60,4};
+	mergesort(arr,0,6);
+	display(arr,6);
 
-	selectionSort(arr1,5);
-	display(arr1,5);
-	selectionSort(arr2,5);
-	display(arr2,5);
-	Merge(arr1,arr2,arr3,5);
-	display(arr3,11);
-	
-	
-	
+
+return 0;
 }
 
 /*...................................................................................................................................*/
@@ -2034,7 +2040,7 @@ void CLinkedList::deleteFirst()
 		{
 			//Swap...
 			int t=head->getData();
-		head->setData(head->getNext()->getData());			
+			head->setData(head->getNext()->getData());			
 			head->getNext()->setData(t);
 
 			Node *tmp=head->getNext();
